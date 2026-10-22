@@ -5,27 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Amer Gari Game With Ad</title>
 <style>
-body{margin:0;background:#222;display:flex;flex-direction:column;align-items:center;color:white;font-family:sans-serif}
-.ad{width:360px;height:90px;background:#333;border:2px dashed yellow;display:flex;align-items:center;justify-content:center;margin:5px;color:yellow;text-align:center}
+body{margin:0;background:#222;display:flex;flex-direction:column;align-items:center;color:#fff;font-family:sans-serif;padding-bottom:60px;}
+.ad{width:320px;height:50px;background:#333;display:flex;align-items:center;justify-content:center;margin:10px 0;overflow:hidden;}
 #score{font-size:24px;margin:10px}
-#box{position:relative;width:360px;height:500px;background:#444;overflow:hidden;border:2px solid white}
-#player{position:absolute;bottom:20px;left:155px;width:50px;height:90px;background:red;border-radius:10px}
-.enemy{position:absolute;width:48px;height:90px;background:blue;border-radius:10px}
-#ctrl{margin-top:12px;display:flex;gap:20px}
-.b{width:80px;height:80px;border:2px solid white;border-radius:10px;background:#555;color:white;font-size:30px}
+#box{position:relative;width:360px;height:500px;background:#111;border:2px solid #555;overflow:hidden;}
+#player{position:absolute;bottom:20px;left:156px;width:48px;height:80px;background:yellow;border-radius:5px;}
+.enemy{position:absolute;width:48px;height:80px;background:red;border-radius:5px;}
+#ctrl{margin-top:12px;display:flex;gap:20px;}
+.b{width:80px;height:80px;border:2px solid #fff;background:#444;color:#fff;font-size:20px;border-radius:10px;}
 </style>
 </head>
 <body>
-<div class="ad">AD - এখানে বিজ্ঞাপন আসবে, এখান থেকে টাকা আসবে</div>
+
+<div class="ad">
+<script>
+ atOptions = {'key':'fe37805c79eb44771e1f77b1d31399ef','format':'iframe','height':50,'width':320,'params':{}};
+</script>
+<script src="https://www.highperformanceformat.com/fe37805c79eb44771e1f77b1d31399ef/invoke.js"></script>
+</div>
+
 <div id="score">Score: 0</div>
 <div id="box"><div id="player"></div></div>
-<div id="ctrl"><button class="b" id="left">◀</button><button class="b" id="right">▶</button></div>
-<div class="ad" style="height:150px">বড় AD - বেশি টাকা এখান থেকে</div>
+<div id="ctrl"><button class="b" id="left">LEFT</button><button class="b" id="right">RIGHT</button></div>
+
+<div style="position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:320px; height:50px; background:#000; z-index:99999;">
 <script>
-let player=document.getElementById('player'),box=document.getElementById('box'),scoreEl=document.getElementById('score'),score=0,pos=155,running=true;
-document.getElementById('left').ontouchstart=()=>{if(pos>0)pos-=20;player.style.left=pos+'px'};
-document.getElementById('right').ontouchstart=()=>{if(pos<310)pos+=20;player.style.left=pos+'px'};
-function spawn(){if(!running)return;let e=document.createElement('div');e.className='enemy';e.style.left=Math.random()*312+'px';e.style.top='-90px';box.appendChild(e);let t=setInterval(()=>{let top=parseInt(e.style.top)+5;e.style.top=top+'px';if(top>500){score++;scoreEl.innerText='Score: '+score;e.remove();clearInterval(t);}let pr=player.getBoundingClientRect(),er=e.getBoundingClientRect();if(!(pr.right<er.left||pr.left>er.right||pr.bottom<er.top||pr.top>er.bottom)){running=false;alert('Game Over Score: '+score);location.reload();}},20);setTimeout(spawn,800);}spawn();
+ atOptions = {'key':'fe37805c79eb44771e1f77b1d31399ef','format':'iframe','height':50,'width':320,'params':{}};
+</script>
+<script src="https://www.highperformanceformat.com/fe37805c79eb44771e1f77b1d31399ef/invoke.js"></script>
+</div>
+
+<script>
+let player=document.getElementById('player');
+let box=document.getElementById('box');
+let scoreEl=document.getElementById('score');
+let score=0; let px=156; let running=true;
+document.getElementById('left').ontouchstart=()=>{px=Math.max(0,px-30); player.style.left=px+'px';}
+document.getElementById('right').ontouchstart=()=>{px=Math.min(312,px+30); player.style.left=px+'px';}
+document.getElementById('left').onclick=()=>{px=Math.max(0,px-30); player.style.left=px+'px';}
+document.getElementById('right').onclick=()=>{px=Math.min(312,px+30); player.style.left=px+'px';}
+function spawn(){if(!running)return; let e=document.createElement('div'); e.className='enemy'; e.style.left=Math.random()*312+'px'; e.style.top='0px'; box.appendChild(e); let top=0; let id=setInterval(()=>{top+=5; e.style.top=top+'px'; if(top>420){ if(Math.abs(parseInt(e.style.left)-px)<48){ running=false; alert('Game Over! Score: '+score); location.reload(); }} if(top>500){clearInterval(id); e.remove(); score++; scoreEl.innerText='Score: '+score;}},30); setTimeout(spawn,800);} spawn();
 </script>
 </body>
 </html>
