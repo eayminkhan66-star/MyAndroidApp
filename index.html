@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amer Gari Game</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#222;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif}
+#score{color:#fff;font-size:24px;margin-bottom:10px;font-weight:bold}
+#box{position:relative;width:360px;height:640px;background:#333;overflow:hidden;border:4px solid #fff;border-radius:12px}
+#road{position:absolute;left:50%;transform:translateX(-50%);width:200px;height:100%;background:#444}
+.line{position:absolute;width:4px;height:100%;background:repeating-linear-gradient(#fff 0 20px, transparent 20px 40px)}
+.line1{left:33%}.line2{left:66%}
+#player{position:absolute;bottom:20px;left:155px;width:48px;height:88px;background:linear-gradient(red,darkred);border-radius:8px;z-index:10}
+#player:after{content:'';position:absolute;top:12px;left:6px;right:6px;height:18px;background:#87CEEB;border-radius:4px}
+.enemy{position:absolute;width:48px;height:88px;border-radius:8px}
+#start{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);padding:16px 32px;background:#0f0;border:none;border-radius:10px;font-size:20px;font-weight:bold;z-index:20}
+#ctrl{margin-top:12px;display:flex;gap:80px}
+.b{width:80px;height:80px;border:2px solid #fff;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;user-select:none}
+</style>
+</head>
+<body>
+<div id="score">Score: 0</div>
+<div id="box">
+<div id="road"><div class="line line1"></div><div class="line line2"></div></div>
+<div id="player"></div>
+<button id="start">▶ খেলা শুরু</button>
+</div>
+<div id="ctrl"><div class="b" id="L">◀</div><div class="b" id="R">▶</div></div>
+<script>
+const box=document.getElementById('box'),player=document.getElementById('player'),start=document.getElementById('start'),scoreEl=document.getElementById('score'),L=document.getElementById('L'),R=document.getElementById('R');
+let play=false,score=0,px=155,spd=4,ens=[],keys={l:false,r:false};
+function rst(){ens.forEach(e=>e.e.remove());ens=[];score=0;px=155;player.style.left=px+'px';scoreEl.textContent='Score: 0';spd=4;}
+function mkEnemy(){let el=document.createElement('div');el.className='enemy';let xs=[70,136,200];let x=xs[Math.floor(Math.random()*3)];el.style.left=x+'px';el.style.top='-90px';el.style.background=`hsl(${Math.random()*360},80%,50%)`;box.appendChild(el);ens.push({e:el,x,y:-90});}
+L.addEventListener('pointerdown',e=>{e.preventDefault();keys.l=true});L.addEventListener('pointerup',()=>keys.l=false);L.addEventListener('pointerleave',()=>keys.l=false);
+R.addEventListener('pointerdown',e=>{e.preventDefault();keys.r=true});R.addEventListener('pointerup',()=>keys.r=false);R.addEventListener('pointerleave',()=>keys.r=false);
+function go(){rst();play=true;start.style.display='none';}
+start.addEventListener('click',go);
+function loop(){
+if(play){
+if(keys.l&&px>70)px-=6;
+if(keys.r&&px<200)px+=6;
+player.style.left=px+'px';
+if(Math.random()<0.03)mkEnemy();
+for(let i=ens.length-1;i>=0;i--){let en=ens[i];en.y+=spd;en.e.style.top=en.y+'px';
+if(en.y>640){en.e.remove();ens.splice(i,1);score++;scoreEl.textContent='Score: '+score;if(score%8==0)spd+=0.4;}
+if(Math.abs(en.x-px)<44&&Math.abs(en.y-530)<78){play=false;start.style.display='block';start.textContent='▶ আবার খেলো - '+score;}}
+}
+requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>
